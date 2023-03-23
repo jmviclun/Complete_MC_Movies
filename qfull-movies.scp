@@ -1,0 +1,21 @@
+#!/bin/bash
+
+cp $1 INPUT.pdb
+
+wc -l INPUT.pdb | awk '{print $1}' > input-fortran
+grep MODEL INPUT.pdb | wc -l >> input-fortran
+
+
+gfortran complete_Movies_GCMC.f90 -o a.exe
+./a.exe < input-fortran
+
+name=$(echo $1 | sed 's/\//\ /g' | awk '{print $NF}')
+
+head -2 INPUT.pdb > full-$name
+cat MAX.pdb >> full-$name
+echo "ENDMDL" >> full-$name
+cat COMPLETED.pdb >> full-$name
+
+rm COMPLETED.pdb MAX.pdb
+
+rm input-fortran a.exe INPUT.pdb
