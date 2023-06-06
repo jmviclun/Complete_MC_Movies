@@ -6,7 +6,7 @@ wc -l INPUT.pdb | awk '{print $1}' > input-fortran
 grep MODEL INPUT.pdb | wc -l >> input-fortran
 
 
-gfortran complete_Movies_GCMC.f90 -o a.exe
+gfortran $HOME/bin/complete_Movies_GCMC.f90 -o a.exe
 ./a.exe < input-fortran
 
 name=$(echo $1 | sed 's/\//\ /g' | awk '{print $NF}')
